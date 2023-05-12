@@ -16,21 +16,25 @@
   <meta name="author" content="Colin Mufan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="OSTEP Chapter12 A Dialogue on Memory Virtualization              本文是个人 OSTEP Chapter12 的阅读感想。            点此阅读原文              In any case, we are not nearly done with virtualization! Rather, you have j">
+    <meta name="description" content="OSTEP Chapter13 The Abstraction: Address Spaces              本文是个人 OSTEP Chapter13 的阅读感想。            点此阅读原文              However, we have to keep those pesky users in mind, and doing so requires the O">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OSTEP Chapter12 A Dialogue on Memory Virtualization">
-<meta property="og:url" content="http://mufancolin.github.io/2023/05/12/OSTEP-Chapter12-A-Dialogue-on-Memory-Virtualization/index.html">
+<meta property="og:title" content="OSTEP Chapter13 The Abstraction: Address Spaces">
+<meta property="og:url" content="http://mufancolin.github.io/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/index.html">
 <meta property="og:site_name" content="Colin Mufan&#39;s wonderland">
-<meta property="og:description" content="OSTEP Chapter12 A Dialogue on Memory Virtualization              本文是个人 OSTEP Chapter12 的阅读感想。            点此阅读原文              In any case, we are not nearly done with virtualization! Rather, you have j">
+<meta property="og:description" content="OSTEP Chapter13 The Abstraction: Address Spaces              本文是个人 OSTEP Chapter13 的阅读感想。            点此阅读原文              However, we have to keep those pesky users in mind, and doing so requires the O">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-05-12T09:05:39.000Z">
-<meta property="article:modified_time" content="2023-05-12T11:54:30.992Z">
+<meta property="og:image" content="http://mufancolin.github.io/img/an_example_address_space.png">
+<meta property="og:image" content="http://mufancolin.github.io/img/three_processes_sharing_memory.png">
+<meta property="og:image" content="http://mufancolin.github.io/img/every_address_you_see_is_virtual.png">
+<meta property="article:published_time" content="2023-05-12T12:44:32.000Z">
+<meta property="article:modified_time" content="2023-05-12T12:44:32.212Z">
 <meta property="article:author" content="Colin Mufan">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://mufancolin.github.io/img/an_example_address_space.png">
   
   
   
-  <title>OSTEP Chapter12 A Dialogue on Memory Virtualization - Colin Mufan&#39;s wonderland</title>
+  <title>OSTEP Chapter13 The Abstraction: Address Spaces - Colin Mufan&#39;s wonderland</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +204,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="OSTEP Chapter12 A Dialogue on Memory Virtualization"></span>
+            <span id="subtitle" data-typed-text="OSTEP Chapter13 The Abstraction: Address Spaces"></span>
           
         </div>
 
@@ -216,7 +220,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-05-12 17:05" pubdate>
+        <time datetime="2023-05-12 20:44" pubdate>
           2023-05-12
         </time>
       </span>
@@ -228,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k words
+          1.5k words
         
       </span>
     
@@ -239,7 +243,7 @@
         
         
         
-          12 mins
+          13 mins
         
       </span>
     
@@ -277,31 +281,38 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">OSTEP Chapter12 A Dialogue on Memory Virtualization</h1>
+            <h1 style="display: none">OSTEP Chapter13 The Abstraction: Address Spaces</h1>
             
             
               <div class="markdown-body">
                 
-                <h1>OSTEP Chapter12 A Dialogue on Memory Virtualization</h1>
+                <h1>OSTEP Chapter13 The Abstraction: Address Spaces</h1>
 <div class="note note-info">
-            <p>本文是个人 OSTEP Chapter12 的阅读感想。</p>
+            <p>本文是个人 OSTEP Chapter13 的阅读感想。</p>
           </div>
-<p><a target="_blank" rel="noopener" href="https://pages.cs.wisc.edu/~remzi/OSTEP/dialogue-vm.pdf">点此阅读原文</a></p>
+<p><a target="_blank" rel="noopener" href="https://pages.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf">点此阅读原文</a></p>
 <div class="note note-warning">
-            <p>In any case, <strong>we are not nearly done with virtualization</strong>! Rather, you have just seen how to virtualize the CPU, but really there is a <strong>big monster</strong> waiting in the closet: <strong>memory</strong>. <strong>Virtualizing memory</strong> is a <strong>complicated</strong> and requires us to <strong>understand</strong> many <strong>more intricate details</strong> about <strong>how the hardware and OS interact</strong>.</p>
+            <p>However, we have to keep those pesky users in mind, and doing so requires the OS to create an easy to use abstraction of physical memory. We call this abstraction the address space, and it is the running program’s view of memory in the system. Understanding this fundamental OS abstraction of memory is key to understanding how memory is virtualized.</p>
           </div>
-<p>在此前几章中，我们学习了如何对 CPU 进行虚拟化 (virtualization)。但是这并不是虚拟化的全部，事实上，还有一块难啃的骨头: 虚拟化内存。虚拟化内存是一个庞大且繁杂的系统性工程，它需要我们对于硬件和操作系统之间的交互细节有更加深入的理解。</p>
-<p>在这个板块中，我们依然会遵循一个循序渐进的原则，先从 base/bounds (此时还不清楚这个的具体所指) 入手，然后我们会学习 TLB 和 多级页表等更有难度的内容。最后，我们希望读者有能力描述功能丰富的现代虚拟内存管理工具的工作原理。</p>
+<p>在本章中，最重要的概念就是<strong>地址空间</strong> (<strong>address space</strong>)。地址空间是操作系统对于物理内存的抽象。对于程序 (program) 而言，它眼中的内存就是地址空间。</p>
+<p>对于一个程序或进程来说，它的地址空间经过简化主要包括 code, stack, heap 三个核心部分。其中 code 部分存放的就是一行行的代码，stack 在函数调用中起到关键作用，特别是在递归中每向下深入递归一层，函数便会被 push 到栈中，而在 <code>return</code> 时，函数便会被 pop 出栈，heap 则用于存放一些动态分配的内存，例如 C 语言中的 <code>malloc()</code> 和 C++、Java中的 <code>new</code>。</p>
+<p>下面的 Figure 13.3 就是一个 16KB 大小的 address space 的示意图，其中 code 部分位于 0KB-1KB 之间。heap 部分从 1KB 开始，并可能在程序运行过程中向下增长或向上缩小。stack 部分从最下方的 16KB 处开始，并可能在程序运行过程中向上增长或向下缩小。</p>
+<figure>
+    <img src="/img/an_example_address_space.png" srcset="/img/loading.gif" lazyload width="500" height="auto" id="an-example-address-space">
+</figure>
+<p>我们说这样的一个 16KB 大小的 address space 其实就是 OS 为这个程序提供的一种抽象化、虚拟化的内存空间。这段代码可能在物理内存中并不位于 0KB-16KB，而可能在物理内存的任何一个地方。对于代码而言，它头顶的天空就是 OS 为它提供的这样一个虚拟化的 address space，在它的世界里没有人跟它竞争这个大的游乐园，它可以尽情地在这个 address space 中干它想干的事情，不只是对于这段代码，对于每一段代码都是一样的，OS 为每一段代码都造了一个梦，一个属于代码自己的梦工厂。而从虚拟地址到物理地址的转化以及这个过程中可能存在的一系列问题，都由 OS 和硬件间相互配合来解决，比如说 OS 会把代码在 address space 中干的事情翻译成在真实的有限的物理内存中应该做的事情。</p>
 <div class="note note-warning">
-            <p>For understanding virtual memory, start with this: <strong>every address generated by a user program is a virtual memory</strong>.</p>
+            <p>When, for example, process A in <a href="#three-processes-sharing-memory">Figure 13.2</a> tries to perform a load at address 0(which we will call a <strong>virtual address</strong>), somehow the OS, in tandem with some hardware support, will <strong>have to make sure the load doesn’t actually go to physical address 0</strong> but <strong>rather to physical address 320KB</strong> (<strong>where A is loaded into memory</strong>). This is the key to virtualization of memory, which underlies every modern computer system in the world.</p>
           </div>
-<p>作者在这段引言中提到了虚拟地址 (virtual address) 的概念。他指出<strong>所有从用户编写的程序中产生出来的地址都是虚拟地址</strong>。 OS 给每个进程 (process，可能此时此刻还无法理解进程的严格含义) 提供了一个虚拟的幻象: 每个进程都有一个专属于它的庞大的 virtual memory，在这样的一个 virtual memory 中当然也有着海量的虚拟地址，即 virtual address。每个进程可以使劲在自己的这一亩三分地里折腾，OS 会在硬件的帮助下通过一些神奇的操作将这些虚拟地址转换为物理地址，物理地址是归根到底的本源，因为别管进程或者应用多么花里胡哨，最底层的其实还是硬件和物理，只有把这些虚拟地址映射成物理地址，才算真正落地，当然这些事情就不归 too young too simple 的进程或者应用来管了，它们只要在各自的虚拟空间中使劲 high 就可以。</p>
-<p>那么为什么会采用这样的一种设计(每个进程有各自的 virtual memory space，然后由操作系统与硬件打配合把虚拟地址转化为物理地址)？第一个原因便是对于使用者(比如说程序员)更加便捷友好。virtual memory space 其实就像一个游乐场，没有太多的约束，你可以自由玩耍，释放天性，施展才华。</p>
-<div class="note note-info">
-            <p>但如果一个程序员需要时时刻刻想着我到底应该把程序里的各个部分存放在有限的物理内存的什么位置，想想就令人头大，不是吗？</p>
+<figure>
+    <img src="/img/three_processes_sharing_memory.png" srcset="/img/loading.gif" lazyload width="500" height="auto" id="three-processes-sharing-memory">
+</figure>
+<div class="note note-danger">
+            <p><strong>Every address you see is virtual.</strong></p>
           </div>
-<p>此外还有对于安全性的考量。对于每个 program 而言，在虚拟化的情景下，它们所占有的 memory space 或者说 address space 是独立的，这样就避免了 A 程序篡改了 B 程序所在的内存的情况发生。</p>
-
+<figure>
+    <img src="/img/every_address_you_see_is_virtual.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="every-address-you-see-is-virtual">
+</figure>
                 
               </div>
             
@@ -318,8 +329,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>OSTEP Chapter12 A Dialogue on Memory Virtualization</div>
-      <div>http://mufancolin.github.io/2023/05/12/OSTEP-Chapter12-A-Dialogue-on-Memory-Virtualization/</div>
+      <div>OSTEP Chapter13 The Abstraction: Address Spaces</div>
+      <div>http://mufancolin.github.io/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/</div>
     </div>
     <div class="license-meta">
       
@@ -363,21 +374,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/05/12/OSTEP-Chapter03-A-Dialogue-on-Virtualization/" title="OSTEP Chapter03 A Dialogue on Virtualization">
+                      <a href="/2023/05/12/OSTEP-Chapter12-A-Dialogue-on-Memory-Virtualization/" title="OSTEP Chapter12 A Dialogue on Memory Virtualization">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">OSTEP Chapter03 A Dialogue on Virtualization</span>
+                        <span class="hidden-mobile">OSTEP Chapter12 A Dialogue on Memory Virtualization</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
-                    
-                      <a href="/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/" title="OSTEP Chapter13 The Abstraction: Address Spaces">
-                        <span class="hidden-mobile">OSTEP Chapter13 The Abstraction: Address Spaces</span>
-                        <span class="visible-mobile">Next</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
                     
                   </article>
                 </div>

@@ -16,21 +16,21 @@
   <meta name="author" content="Colin Mufan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="OSTEP Chapter03 A Dialogue on Virtualization              本文是个人 OSTEP Chapter03 的阅读感想。            点此阅读原文 在本文中，作者用桃子(peach)的例子引出了操作系统中的第一个重要概念: 虚拟(virtualization)。 孕育出虚拟 (virtualization) 这个想法的摇篮在我看来是在现">
+    <meta name="description" content="OSTEP Chapter12 A Dialogue on Memory Virtualization              本文是个人 OSTEP Chapter12 的阅读感想。                         In any case, we are not nearly done with virtualization! Rather, you have just see">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OSTEP Chapter03 A Dialogue on Virtualization">
-<meta property="og:url" content="http://mufancolin.github.io/2023/05/12/OSTEP-Chapter03-A-Dialogue-on-Virtualization/index.html">
+<meta property="og:title" content="OSTEP Chapter12 A Dialogue on Memory Virtualization">
+<meta property="og:url" content="http://mufancolin.github.io/2023/05/12/OSTEP-Chapter12-A-Dialogue-on-Memory-Virtualization/index.html">
 <meta property="og:site_name" content="Colin Mufan&#39;s wonderland">
-<meta property="og:description" content="OSTEP Chapter03 A Dialogue on Virtualization              本文是个人 OSTEP Chapter03 的阅读感想。            点此阅读原文 在本文中，作者用桃子(peach)的例子引出了操作系统中的第一个重要概念: 虚拟(virtualization)。 孕育出虚拟 (virtualization) 这个想法的摇篮在我看来是在现">
+<meta property="og:description" content="OSTEP Chapter12 A Dialogue on Memory Virtualization              本文是个人 OSTEP Chapter12 的阅读感想。                         In any case, we are not nearly done with virtualization! Rather, you have just see">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-05-12T08:24:13.000Z">
-<meta property="article:modified_time" content="2023-05-12T08:27:52.430Z">
+<meta property="article:published_time" content="2023-05-12T09:05:39.000Z">
+<meta property="article:modified_time" content="2023-05-12T09:05:39.547Z">
 <meta property="article:author" content="Colin Mufan">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>OSTEP Chapter03 A Dialogue on Virtualization - Colin Mufan&#39;s wonderland</title>
+  <title>OSTEP Chapter12 A Dialogue on Memory Virtualization - Colin Mufan&#39;s wonderland</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="OSTEP Chapter03 A Dialogue on Virtualization"></span>
+            <span id="subtitle" data-typed-text="OSTEP Chapter12 A Dialogue on Memory Virtualization"></span>
           
         </div>
 
@@ -216,7 +216,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-05-12 16:24" pubdate>
+        <time datetime="2023-05-12 17:05" pubdate>
           2023-05-12
         </time>
       </span>
@@ -228,7 +228,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          607 words
+          1.3k words
         
       </span>
     
@@ -239,7 +239,7 @@
         
         
         
-          6 mins
+          12 mins
         
       </span>
     
@@ -277,22 +277,29 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">OSTEP Chapter03 A Dialogue on Virtualization</h1>
+            <h1 style="display: none">OSTEP Chapter12 A Dialogue on Memory Virtualization</h1>
             
             
               <div class="markdown-body">
                 
-                <h1>OSTEP Chapter03 A Dialogue on Virtualization</h1>
+                <h1>OSTEP Chapter12 A Dialogue on Memory Virtualization</h1>
 <div class="note note-info">
-            <p>本文是个人 OSTEP Chapter03 的阅读感想。</p>
+            <p>本文是个人 OSTEP Chapter12 的阅读感想。</p>
           </div>
-<p><a target="_blank" rel="noopener" href="https://pages.cs.wisc.edu/~remzi/OSTEP/dialogue-virtualization.pdf">点此阅读原文</a></p>
-<p>在本文中，作者用桃子(peach)的例子引出了操作系统中的第一个重要概念: <strong>虚拟</strong>(<strong>virtualization</strong>)。</p>
-<p>孕育出虚拟 (<strong>virtualization</strong>) 这个想法的摇篮在我看来是在现实生活中客观存在且必须得到解决的<strong>矛盾</strong>。具体来说，是如何在只有一个<strong>实体</strong>桃子 (one <strong>physical</strong> peach) 的情况下让若干人觉得他们各自占有一个桃子。因此，<strong>虚拟</strong>桃子 (<strong>virtual</strong> peach) 的概念应运而生，这里我们暂且不去讨论如何由一个<strong>实体</strong>桃子(<strong>physical</strong> peach)变出若干个<strong>虚拟</strong>桃子 (<strong>virtual</strong> peach)。</p>
-<div class="note note-danger">
-            <p>我们只是强调这些虚拟桃子<strong>归根结底</strong>都是那一个实体桃子变出来的，也就是说每个人实际上其实都在和其他所有人<strong>分享</strong> (<strong>share</strong>) 一个实体桃子。但当人数相对不多的时候，人们感觉不到自己在和别人分享桃子，他们会觉得自己<strong>独占</strong>了一个桃子，这便是<strong>虚拟</strong> (<strong>virtualization</strong>) 的魅力所在。</p>
+<div class="note note-warning">
+            <p>In any case, <strong>we are not nearly done with virtualization</strong>! Rather, you have just seen how to virtualize the CPU, but really there is a <strong>big monster</strong> waiting in the closet: <strong>memory</strong>. <strong>Virtualizing memory</strong> is a <strong>complicated</strong> and requires us to <strong>understand</strong> many <strong>more intricate details</strong> about <strong>how the hardware and OS interact</strong>.</p>
           </div>
-<p>类似地，假设我们的电脑只有一个 CPU，但是需要使用 CPU 的应用 (application) 多于一个。在这种情形下，我们便可以通过虚拟 (virtualization) 的方法将一个客观存在的实体 CPU 变成若干个虚拟的 CPU，这样每个应用在运行的时候会觉得自己独占了一个 CPU，但实际上只有一个 CPU。</p>
+<p>在此前几章中，我们学习了如何对 CPU 进行虚拟化 (virtualization)。但是这并不是虚拟化的全部，事实上，还有一块难啃的骨头: 虚拟化内存。虚拟化内存是一个庞大且繁杂的系统性工程，它需要我们对于硬件和操作系统之间的交互细节有更加深入的理解。</p>
+<p>在这个板块中，我们依然会遵循一个循序渐进的原则，先从 base/bounds (此时还不清楚这个的具体所指) 入手，然后我们会学习 TLB 和 多级页表等更有难度的内容。最后，我们希望读者有能力描述功能丰富的现代虚拟内存管理工具的工作原理。</p>
+<div class="note note-warning">
+            <p>For understanding virtual memory, start with this: <strong>every address generated by a user program is a virtual memory</strong>.</p>
+          </div>
+<p>作者在这段引言中提到了虚拟地址 (virtual address) 的概念。他指出<strong>所有从用户编写的程序中产生出来的地址都是虚拟地址</strong>。 OS 给每个进程 (process，可能此时此刻还无法理解进程的严格含义) 提供了一个虚拟的幻象: 每个进程都有一个专属于它的庞大的 virtual memory，在这样的一个 virtual memory 中当然也有着海量的虚拟地址，即 virtual address。每个进程可以使劲在自己的这一亩三分地里折腾，OS 会在硬件的帮助下通过一些神奇的操作将这些虚拟地址转换为物理地址，物理地址是归根到底的本源，因为别管进程或者应用多么花里胡哨，最底层的其实还是硬件和物理，只有把这些虚拟地址映射成物理地址，才算真正落地，当然这些事情就不归 too young too simple 的进程或者应用来管了，它们只要在各自的虚拟空间中使劲 high 就可以。</p>
+<p>那么为什么会采用这样的一种设计(每个进程有各自的 virtual memory space，然后由操作系统与硬件打配合把虚拟地址转化为物理地址)？第一个原因便是对于使用者(比如说程序员)更加便捷友好。virtual memory space 其实就像一个游乐场，没有太多的约束，你可以自由玩耍，释放天性，施展才华。</p>
+<div class="note note-info">
+            <p>但如果一个程序员需要时时刻刻想着我到底应该把程序里的各个部分存放在有限的物理内存的什么位置，想想就令人头大，不是吗？</p>
+          </div>
+<p>此外还有对于安全性的考量。对于每个 program 而言，在虚拟化的情景下，它们所占有的 memory space 或者说 address space 是独立的，这样就避免了 A 程序篡改了 B 程序所在的内存的情况发生。</p>
 
                 
               </div>
@@ -310,8 +317,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>OSTEP Chapter03 A Dialogue on Virtualization</div>
-      <div>http://mufancolin.github.io/2023/05/12/OSTEP-Chapter03-A-Dialogue-on-Virtualization/</div>
+      <div>OSTEP Chapter12 A Dialogue on Memory Virtualization</div>
+      <div>http://mufancolin.github.io/2023/05/12/OSTEP-Chapter12-A-Dialogue-on-Memory-Virtualization/</div>
     </div>
     <div class="license-meta">
       
@@ -355,21 +362,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/05/11/OS-AI-Spring-2023-Lab1-Analysis/" title="OS AI Spring 2023 Lab1 Analysis">
+                      <a href="/2023/05/12/OSTEP-Chapter03-A-Dialogue-on-Virtualization/" title="OSTEP Chapter03 A Dialogue on Virtualization">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">OS AI Spring 2023 Lab1 Analysis</span>
+                        <span class="hidden-mobile">OSTEP Chapter03 A Dialogue on Virtualization</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
-                    
-                      <a href="/2023/05/12/OSTEP-Chapter12-A-Dialogue-on-Memory-Virtualization/" title="OSTEP Chapter12 A Dialogue on Memory Virtualization">
-                        <span class="hidden-mobile">OSTEP Chapter12 A Dialogue on Memory Virtualization</span>
-                        <span class="visible-mobile">Next</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
                     
                   </article>
                 </div>

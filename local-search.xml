@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>OSTEP Chapter03 A Dialogue on Virtualization</title>
+    <link href="/2023/05/12/OSTEP-Chapter03-A-Dialogue-on-Virtualization/"/>
+    <url>/2023/05/12/OSTEP-Chapter03-A-Dialogue-on-Virtualization/</url>
+    
+    <content type="html"><![CDATA[<h1>OSTEP Chapter03 A Dialogue on Virtualization</h1><div class="note note-info">            <p>本文是个人 OSTEP Chapter03 的阅读感想。</p>          </div><p><a href="https://pages.cs.wisc.edu/~remzi/OSTEP/dialogue-virtualization.pdf">点此阅读原文</a></p><p>在本文中，作者用桃子(peach)的例子引出了操作系统中的第一个重要概念: <strong>虚拟</strong>(<strong>virtualization</strong>)。</p><p>孕育出虚拟 (<strong>virtualization</strong>) 这个想法的摇篮在我看来是在现实生活中客观存在且必须得到解决的<strong>矛盾</strong>。具体来说，是如何在只有一个<strong>实体</strong>桃子 (one <strong>physical</strong> peach) 的情况下让若干人觉得他们各自占有一个桃子。因此，<strong>虚拟</strong>桃子 (<strong>virtual</strong> peach) 的概念应运而生，这里我们暂且不去讨论如何由一个<strong>实体</strong>桃子(<strong>physical</strong> peach)变出若干个<strong>虚拟</strong>桃子 (<strong>virtual</strong> peach)。</p><div class="note note-danger">            <p>我们只是强调这些虚拟桃子<strong>归根结底</strong>都是那一个实体桃子变出来的，也就是说每个人实际上其实都在和其他所有人<strong>分享</strong> (<strong>share</strong>) 一个实体桃子。但当人数相对不多的时候，人们感觉不到自己在和别人分享桃子，他们会觉得自己<strong>独占</strong>了一个桃子，这便是<strong>虚拟</strong> (<strong>virtualization</strong>) 的魅力所在。</p>          </div><p>类似地，假设我们的电脑只有一个 CPU，但是需要使用 CPU 的应用 (application) 多于一个。在这种情形下，我们便可以通过虚拟 (virtualization) 的方法将一个客观存在的实体 CPU 变成若干个虚拟的 CPU，这样每个应用在运行的时候会觉得自己独占了一个 CPU，但实际上只有一个 CPU。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>OS AI Spring 2023 Lab1 Analysis</title>
     <link href="/2023/05/11/OS-AI-Spring-2023-Lab1-Analysis/"/>
     <url>/2023/05/11/OS-AI-Spring-2023-Lab1-Analysis/</url>

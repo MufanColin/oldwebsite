@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://mufancolin.github.io/img/three_processes_sharing_memory.png">
 <meta property="og:image" content="http://mufancolin.github.io/img/every_address_you_see_is_virtual.png">
 <meta property="article:published_time" content="2023-05-12T12:44:32.000Z">
-<meta property="article:modified_time" content="2023-05-12T12:45:33.026Z">
+<meta property="article:modified_time" content="2023-05-12T12:47:57.025Z">
 <meta property="article:author" content="Colin Mufan">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://mufancolin.github.io/img/an_example_address_space.png">
@@ -292,7 +292,7 @@
           </div>
 <p><a target="_blank" rel="noopener" href="https://pages.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf">点此阅读原文</a></p>
 <div class="note note-warning">
-            <p>However, we have to keep those pesky users in mind, and doing so requires the OS to create an easy to use abstraction of physical memory. We call this abstraction the address space, and it is the running program’s view of memory in the system. Understanding this fundamental OS abstraction of memory is key to understanding how memory is virtualized.</p>
+            <p>However, we have to keep those pesky users in mind, and doing so requires the <strong>OS</strong> to <strong>create an</strong> easy to use <strong>abstraction of physical memory</strong>. We call this abstraction the <strong>address space</strong>, and it is <strong>the running program’s view of memory in the system</strong>. Understanding this fundamental OS abstraction of memory is key to understanding how memory is virtualized.</p>
           </div>
 <p>在本章中，最重要的概念就是<strong>地址空间</strong> (<strong>address space</strong>)。地址空间是操作系统对于物理内存的抽象。对于程序 (program) 而言，它眼中的内存就是地址空间。</p>
 <p>对于一个程序或进程来说，它的地址空间经过简化主要包括 code, stack, heap 三个核心部分。其中 code 部分存放的就是一行行的代码，stack 在函数调用中起到关键作用，特别是在递归中每向下深入递归一层，函数便会被 push 到栈中，而在 <code>return</code> 时，函数便会被 pop 出栈，heap 则用于存放一些动态分配的内存，例如 C 语言中的 <code>malloc()</code> 和 C++、Java中的 <code>new</code>。</p>

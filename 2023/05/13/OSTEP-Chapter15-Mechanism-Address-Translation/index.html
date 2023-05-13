@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://mufancolin.github.io/img/process_and_its_address_space.png">
 <meta property="og:image" content="http://mufancolin.github.io/img/physical_memory_with_a_single_relocated_process.png">
 <meta property="article:published_time" content="2023-05-13T06:33:06.000Z">
-<meta property="article:modified_time" content="2023-05-13T06:33:06.596Z">
+<meta property="article:modified_time" content="2023-05-13T06:40:15.031Z">
 <meta property="article:author" content="Colin Mufan">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://mufancolin.github.io/img/process_and_its_address_space.png">
@@ -231,7 +231,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.2k words
+          4.3k words
         
       </span>
     
@@ -242,7 +242,7 @@
         
         
         
-          36 mins
+          37 mins
         
       </span>
     
@@ -320,7 +320,7 @@
 <p>在之前我们提到，操作系统要和硬件打配合，通过使用 base register 和 bound register 来完成地址的转化过程 (address translation)。这其实就相当于操作系统在查询物理内存中何处有一个空间足够的空档能够让 virtual address space 转换进去，如果存在这样一块空档，那就可以通过设置 base register 实现转化。</p>
 <p>操作系统是怎么知道物理内存哪里有空档？我们说当一个新的进程被创立了之后，这个新的进程当然就会拥有一个属于它的 address space，这是它的虚拟世界，没有人与它争抢。但同时操作系统也需要私下里给这个 address space 在物理内存中找到一块空地，这个时候操作系统通常会去搜索一个叫做 free list 的数据结构，这个 free list 中存放的便是物理内存中的空闲块，相当于操作系统从 free list 找到一个空闲块，然后利用这个物理内存中的空闲块建立一个从虚拟地址到物理地址之间的映射关系，然后这个原本的空闲块便不再空闲了，它就会从 free list 当中被剔除出去。</p>
 <p>当一个进程被终止的时候，它的 address space 就相当于消失了，因此在物理内存中也就不需要与之对应的部分，这时候操作系统需要从物理内存中回收这部分物理地址，可以把它打包起来添加到 free list 当中。</p>
-<p>在 CPU 的 MMU (memory management unit) 中，我们有一个 base register，还有一个 bound register。操作系统如何利用这一个 base register 和一个 bound register 在诸多进程中切换？这时候就需要及时备份 base register 和 bound register 的值。具体而言，对于不同的进程来说，它们最后被转化到的物理地址肯定都是不一样的。因此，对于不同的进程所需要的 base register 中存放的值也是不一样的。当从 A 进程切换到 B 进程时，有必要把与 A 进程对应的 base register 的值和 bound register 的值备份到 memory 当中，然后再把 base register 的值和 bound register 的值更新为 B进程对应的 base 和 bound。而当我们需要重启 A 进程的时候，我们应该从内存中再调出 A 进程对应的 base 和 bound，并把它们分别赋给 base register 和 bound register。这样一个负责进程控制的结构被称为 PCB (process control block)。</p>
+<p>在 CPU 的 MMU (memory management unit) 中，我们有一个 base register，还有一个 bound register。操作系统如何利用这一个 base register 和一个 bound register 在诸多进程中切换？这时候就需要及时备份 base register 和 bound register 的值。具体而言，对于不同的进程来说，它们最后被转化到的物理地址肯定都是不一样的。因此，对于不同的进程所需要的 base register 中存放的值也是不一样的。当从 A 进程切换到 B 进程时，有必要把与 A 进程对应的 base register 的值和 bound register 的值备份到 memory 当中，然后再把 base register 的值和 bound register 的值更新为 B 进程对应的 base 和 bound。而当我们需要重启 A 进程的时候，我们应该从内存中再调出 A 进程对应的 base 和 bound，并把它们分别赋给 base register 和 bound register。这样一个负责进程控制的结构被称为 PCB (process control block)。同时我们指出有了 base register 和 bound register 后，我们想改变从虚拟地址到物理地址的映射关系也变得很容易，这指的就是原先 A 程序的映射位于物理内存的 B 区，现在如果我们需要把 A 程序的映射改变到物理内存的 C 区，最核心的便是 base register 的更新工作。</p>
 <p>最后，操作系统还要对于整个计算机的安全性负责。当一个程序想要访问超出自身 address space 容量的虚拟地址时，它便已经越界了。如果操作系统不能够对此抛出异常 (exception) 并及时终止异常程序，那么这个程序很可能会侵蚀其它程序所在的内存空间，造成难以估量的不良后果。</p>
 
                 

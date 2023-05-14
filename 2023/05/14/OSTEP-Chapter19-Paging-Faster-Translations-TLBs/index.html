@@ -1,0 +1,706 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/profile.JPG">
+  <link rel="icon" href="/img/profile.JPG">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Colin Mufan">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="OSTEP Chapter19 Paging: Faster Translations (TLBs)              本文是个人 OSTEP Chapter19 的阅读感想。            点此阅读原文 在 Chapter18 中我们提到了 Paging 的想法虽然很好，但是 Paging 的时间开销非常大，这是因为在把虚拟地址转化为物理地址的过程中，你需要提取出虚拟地址中的 V">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OSTEP Chapter19 Paging: Faster Translations (TLBs)">
+<meta property="og:url" content="http://mufancolin.github.io/2023/05/14/OSTEP-Chapter19-Paging-Faster-Translations-TLBs/index.html">
+<meta property="og:site_name" content="Colin Mufan&#39;s wonderland">
+<meta property="og:description" content="OSTEP Chapter19 Paging: Faster Translations (TLBs)              本文是个人 OSTEP Chapter19 的阅读感想。            点此阅读原文 在 Chapter18 中我们提到了 Paging 的想法虽然很好，但是 Paging 的时间开销非常大，这是因为在把虚拟地址转化为物理地址的过程中，你需要提取出虚拟地址中的 V">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://mufancolin.github.io/img/TLB_control_flow_algorithm.png">
+<meta property="og:image" content="http://mufancolin.github.io/img/an_array_in_a_tiny_address_space.png">
+<meta property="og:image" content="http://mufancolin.github.io/img/use_caching_when_possible.png">
+<meta property="og:image" content="http://mufancolin.github.io/img/os_handled_TLB_control_flow_algorithm.png">
+<meta property="og:image" content="http://mufancolin.github.io/img/TLB_example1.png">
+<meta property="og:image" content="http://mufancolin.github.io/img/TLB_example2.png">
+<meta property="og:image" content="http://mufancolin.github.io/img/TLB_example3.png">
+<meta property="article:published_time" content="2023-05-14T06:57:20.000Z">
+<meta property="article:modified_time" content="2023-05-14T06:57:20.527Z">
+<meta property="article:author" content="Colin Mufan">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://mufancolin.github.io/img/TLB_control_flow_algorithm.png">
+  
+  
+  
+  <title>OSTEP Chapter19 Paging: Faster Translations (TLBs) - Colin Mufan&#39;s wonderland</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"mufancolin.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Colin Mufan&#39;s wonderland</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OSTEP Chapter19 Paging: Faster Translations (TLBs)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Colin Mufan
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-14 14:57" pubdate>
+          2023-05-14
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          68 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">OSTEP Chapter19 Paging: Faster Translations (TLBs)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>OSTEP Chapter19 Paging: Faster Translations (TLBs)</h1>
+<div class="note note-info">
+            <p>本文是个人 OSTEP Chapter19 的阅读感想。</p>
+          </div>
+<p><a target="_blank" rel="noopener" href="https://pages.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf">点此阅读原文</a></p>
+<p>在 Chapter18 中我们提到了 Paging 的想法虽然很好，但是 Paging 的时间开销非常大，这是因为在把虚拟地址转化为物理地址的过程中，你需要提取出虚拟地址中的 VPN 段，并以此为数组下标到 page table 中寻找到 page table 这个超大数组中对应的 page table entry，然后从 PTE 中提取出 PFN，并把 PFN 和虚拟地址的 offset 段拼接在一起，最终才能形成一个物理地址，并让硬件根据此物理地址取出在真实的物理地址中存放的数据，每次你想从物理地址中取出在那里存放的数据，都需要经过前面这些漫长的流程。我们就在想：有没有什么办法能够加速这个过程？</p>
+<div class="note note-warning">
+            <p>Using paging as the core mechanism to support virtual memory can lead to high performance overheads. By chopping the address space into small, fixed-sized units(i.e., pages), paging requires a large amount of mapping information. Because that mapping information is generally</p>
+          </div>
+<div class="note note-danger">
+            <p>在上面提到的 an extra memory lookup 在我看来指的就是，你需要基于从 virtual address 中提取出的 VPN 段，然后再结合 PageTableBaseRegister(在 PageTableBaseRegister)当中存放着 PageTable 的基地址。通过公式</p><figure><div class="code-wrapper"><pre class="line-numbers language-c" data-language="c"><code class="language-c">PageTableEntryAddress <span class="token operator">=</span> PageTableBaseRegister <span class="token operator">+</span> VPN <span class="token operator">*</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>PageTableEntry<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div></figure><p>得到一个 PageTableEntryAddress，你需要多访问一此地址，然后取出该 PageTableEntry 中的内容(其中的内容通常意义下包括 PFN, page frame number 和一些权限位等)，你无法直接得到 page frame number，而是需要去多访问一次存放在内存中的 page table，这增加了一次访问。</p>
+          </div>
+<p>当我们想加快速度的时候，操作系统通常需要一个帮手，这个帮手当仁不让就是和它打配合已经很久的硬件 (hardware)。为了加速地址的转化过程，我们需要在 CPU 的 MMU 中加入一个名叫 TLB 的硬件，至于为什么起名叫做 TLB，是一个历史原因，TLB 的全称是 Translation-lookaside buffer，它本质上就是一个 hardware cache，其中存放着那些最常用的 virtual address 和 physical address 之间的转化关系，因此 TLB 的一个更好的名字是 address-translation cache。当我们要把一个虚拟地址转化为物理地址时，我们会先到 TLB 当中检查 TLB 中是否存在现成的转化关系，即 TLB 中有没有存储这个虚拟地址和哪一个物理地址相对应，如果 TLB 中能够检测到该虚拟地址与某个物理地址的对应关系，此时就没有必要再去访问页表 (page table) 进行之前提到的一大串流程，而是直接通过 TLB 获取与该虚拟地址对应的物理地址，硬件会访问该物理地址并存放在该物理地址当中的数值。</p>
+<h2 id="TLB-Basic-Algorithm">TLB Basic Algorithm</h2>
+<p>下面我们结合 <a href="#TLB-control-flow-algorithm">Figure 19.1</a> 再来阐述一下 TLB 的工作原理。TLB 是 CPU 中的 MMU (memory management unit) 当中的一个硬件，它起到的作用是加速 address translation 的过程。如果只依赖页表 (page table)，不依赖 TLB (translation lookahead buffer)，那么整个 address translation 的过程时间长，不高效。其原因在于每一次试图将某个 virtual address 转化为 physical address的时候都需要去访问页表，而页表也是存在 memory 中的，而且它的体量一般都很大。为此我们学习 cache 的设计思想，把一些最常用的 virtual address 到 physical address 的转化关系存放在 TLB 中。当需要进行 virtual address 到 physical address 的转化时，我们并不直接去访问页表，而是先到 TLB 中进行检索，看 TLB 中是否已经存放了该虚拟地址进行 address translation 的说明书，如果有，我们把这种情况称作 TLB hit，那么就没有必要去访问页表了，直接可以从 TLB 中获取到与该虚拟地址对应的物理地址，如果 TLB 中没有存放该虚拟地址的 address translation 的说明书，这个时候我们就需要重复之前的到页表 (page table) 中寻找转化关系的一套完整且有些冗长的流程，但是注意当我们从页表 (page table) 中获取到对应关系的时候，我们会把这个对应关系存放在 TLB 中，因为我们默认该虚拟地址的转化关系可能在未来会被重复使用，因此需要把它加载到 TLB 中，这样当我们下次需要知道该虚拟地址应该转化到哪个物理地址的时候，就不需要去访问庞大的页表，而是可以直接从 TLB 中获取到我们想要的答案。TLB 是 MMU (memory management unit) 当中的一个硬件，它离 CPU 很近，因此速度非常快，从 TLB 中寻找我们想要的转化关系远远快于从存放在内存中的 page table 寻找我们想要的转化关系。</p>
+<figure>
+    <img src="/img/TLB_control_flow_algorithm.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="TLB-control-flow-algorithm">
+</figure>
+<p>在上图中所示的 TLB 的算法中，我们看到第一步同样是从 virtual address 中提取出其中的 VPN 段。我们的思路是清晰的，找到 VPN (virtual page number) 对应的 PFN (page frame number)，然后将 virtual page number 后面的 offset 拼接到 PFN 后，这样就形成了最后我们想要的 physical address。因此当我们从 virtual address 中提取出 VPN 后，我们便拿着这个 VPN 到 TLB 中去进行检索，看 TLB 中有没有存放这个 VPN 的转化关系，即 TLB 中有没有告诉我们这个 VPN 应该和哪个 PFN 对应起来。如果我们发现在 TLB 中存在该 VPN 的对应关系，我们便把这个称作是 TLB hit。我们进入到对应的 TLB entry 中，并从该 TLB entry中提取出 PFN 段，并将该 PFN 段和 offset 段拼接在一起，得到我们想要的 physical address。</p>
+<p>如果在我们从 virtual address 中提取出 VPN，并且没有在 TLB 中找到该 VPN 的对应关系。此时我们就要重复之前页表中的查找操作，即由页表的基地址和 VPN (数组下标) 计算出 PTEAddress，然后从该 PTEAddress 中提取出 PTE，再从 PTE 中提取出 PFN 和一些其它的内容，并把该 VPN 和 PFN 的对应关系重新加载到 TLB 中，并退回到最开始的状态下重复这一过程，此时我们再拿着 VPN 到 TLB 中进行检索，就会发现 TLB 中有关于该 VPN 的转化方式的说明。</p>
+<p>我们使用 TLB 的初衷当然就是希望增加 TLB hit 的概率，降低 TLB miss 的概率，因此我们要想方设法降低 TLB miss 的概率，或在一个具体的问题中降低 TLB miss 的总次数。</p>
+<h2 id="Example-Accessing-An-Array">Example: Accessing An Array</h2>
+<p>现在我们假设在 memory 中存放着 10 个 integers，从虚拟地址 100 开始。在虚拟地址空间中，每个地址都是 8 位，在虚拟地址空间中每个 page 的大小是 16 bytes。</p>
+<p>因为每个地址都是 8 位，所以这个 address space 中总共可以存放 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>8</mn></msup><mo>=</mo><mn>256</mn></mrow><annotation encoding="application/x-tex">2^8=256</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">256</span></span></span></span> bytes，又因为在虚拟地址空间中每个 page 的大小是 16 bytes，所以共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>256</mn><mo>÷</mo><mn>16</mn><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">256\div16=16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">256</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span> 个 pages。因此 VPN 段共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mn>16</mn><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">\log_2{16}=4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9386em;vertical-align:-0.2441em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord">16</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 位 (这里的 16 指的是 pages 的总数为 16)，offset 段共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">8-4=4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 位(依然可以用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mn>16</mn><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">\log_2{16}=4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9386em;vertical-align:-0.2441em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord">16</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 来进行计算，这里的 16 指的是每个 page 的大小是 16 bytes)。</p>
+<p><a href="#an-array-in-a-tiny-address-space">Figure 19.2</a> 展示出这 10 个 integers 是如何在内存中排布的。设这个数组为 <code>a</code>，那么可以看出 <code>a[0]</code> 处于 <code>VPN = 6</code>，<code>offset = 4</code> 处。6 号 virtual page 中存放有 3 个数，7 号 virtual page 中存放有 4 个数，8 号 virtual page 中存放有 3 个数。</p>
+<figure>
+    <img src="/img/an_array_in_a_tiny_address_space.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="an-array-in-a-tiny-address-space">
+</figure>
+<p>让我们来看如下一段简单的 C 代码。</p>
+<figure><div class="code-wrapper"><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    sum <span class="token operator">+=</span> a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></div></figure>
+<p>现在我们把目光聚焦在数组元素的内存访问上，当我们第一次访问 <code>a[0]</code> 时，<code>a[0]</code> 所在的 virtual page 并不在 TLB 中，因此会导致出现一次 TLB miss。这一次 TLB miss 后，我们会从页表中把与 VPN = 6 对应的 physical page frame 找出来，然后将这对 VPN 与 PFN 之间的对应关系加载到 TLB 中，因为 <code>a[1], a[2]</code> 两个元素和 <code>a[0]</code> 同位于 <code>VPN = 6</code> 中 (这里用到了 spatial locality，相邻的数组元素处在了同一个虚拟页中)，因此当之前访问 <code>a[0]</code> 出现了 TLB miss 后，6 号 virtual space 与其对应的 physical page frame 之间的对应关系就已经被加载到 TLB 中，所以在访问 <code>a[1], a[2]</code> 两个元素的时候不会发生 TLB miss，都是 TLB hit，我们只需要把 PFN 和 offset 拼接在一起即可得到对应的 physical address。类似的，访问 <code>a[3]</code> 会造成一次 TLB miss，但是在这次 TLB miss 后，后续访问 <code>a[4], a[5], a[6]</code> 都会是 TLB hit。访问 <code>a[7]</code> 会造成一次 TLB miss，但是在这次 TLB miss 后，后续访问 <code>a[8], a[9]</code> 都会是 TLB hit。在十次访问中，TLB hit 了 7 次，miss 了 3 次。TLB hit rate 的值为 70%。</p>
+<p>同样，我们也可以直观地体会到如果我们的 address space 中的每一个 page 的 size 很大，则可以继续增加 TLB hit rate，因为通过上面的例子可以发现，在访问数组元素的时候，对于处于同一页的元素而言，只有第一个元素会触发 TLB miss，在这一个 TLB miss 后，在访问剩下的所有元素时都会是 TLB hit。因此增大 page size 有助于提高 TLB hit rate，常见的 page size 是 4KB，而不是我们这里的 16 bytes。</p>
+<p>TLB 的性能与两个准则密切相关: temporal locality 和 spatial locality。在之前我们提到了如果增加 page size，则有助于提高 TLB hit rate，这主要利用的是 spatial locality，因为同处于一个 page 中的元素在当中的第一个元素触发 TLB miss 后，剩下的所有元素都会是 TLB hit。那么，对于 temporal locality 来说呢？如果我们的代码中有一个循环结构会对于某些元素进行反复访问，这个时候假设我们有一个容量足够的 TLB，它能够存放下十个 VPN 与 PFN 之间的对应关系，则 TLB 会有十次 TLB hit，并且循环结构意味着如果我们让这个循环结构运行成百上千次，每一次都会是 10 次 TLB hit，这也增大了 TLB hit rate。</p>
+<h2 id="补充-Use-Caching-When-Possible">补充: Use Caching When Possible</h2>
+<figure>
+    <img src="/img/use_caching_when_possible.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="use-caching-when-possible">
+</figure>
+<h2 id="Who-handles-the-TLB-miss">Who handles the TLB miss?</h2>
+<p>接下里让我们考虑一个问题，当出现 TLB miss 时，会由谁来对此进行处理？总的而言，在早期这一工作是由硬件完成的 (hardware-managed TLBs)，而现如今这一工作是由软件完成的 (software-managed TLB)。</p>
+<p>在 <a href="#os-handled-TLB-control-flow-algorithm">Figure 19.3</a> 中展示出当出现 TLB miss 时，硬件部分只负责抛出一个 TLB miss 的异常，后续如何对此异常进行应对是操作系统中 TLB miss handler 的任务。而在</p>
+<figure>
+    <img src="/img/os_handled_TLB_control_flow_algorithm.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="os-handled-TLB-control-flow-algorithm">
+</figure>
+<p>而在 <a href="#TLB-control-flow-algorithm">Figure 19.1</a> 中，如果使用 hardware 来处理 TLB miss 的情况，则是十分复杂的，具体可看 lines 11-19。</p>
+<h2 id="TLB-Contents-What’s-In-There">TLB Contents: What’s In There?</h2>
+<p>此前我们提到过，TLB (translation lookahead buffer) 本质上就是一个 hardware cache，我们说 TLB 这个 cache 的结构是全相联 (fully-associative cache)。也就是说在 TLB 中，各个 TLB entry 的排布是没有任何规律的，你想寻找的 address translation 的关系 (例如 virtual address A 对应的 physical address B 到底是谁，本质上归结于 VPN 对应的 PFN 是谁，因为 virtual address 可以拆成 VPN 和 offset 两个部分，同时 physical address 可以拆成 PFN 和 offset 两个部分，对于 virtual address 和 physical address 而言，它们共享 offset 这部分内容，变化仅仅是 VPN 和 PFN 之间的区别，因此我们说要找到 virtual address 和 physical address 之间的映射关系，其实也就是要找到 VPN 和 PFN 之间的映射关系) 可能会分布在 TLB 中的任何一个 entry 中，所以你在最坏情况下需要检索整个 TLB 来确定 TLB 中是否已经存在你寻找的 address translation 的信息。</p>
+<p>类似于 page table 这个超级大的数组中有很多个小的 page table entry (PTE)。TLB 这个 fully-associative cache 当中也有很多 TLB entries。在 Chapter18 介绍 page table 的时候我们提到过，每一个 page table entry 主要由两部分组成，第一部分是 PFN，第二部分是 other bits，例如各种各样的权限位或标记位等等。TLB entry 的结构大致与之类似，可以分为 VPN，PFN 和 other bits 三大部分。</p>
+<p>在这里我们对于 page table 中的 valid bit 和 TLB 中的 valid bit 做一下区分。我们不妨来思考一下，在 page table 中，如果其中的某一个 PTE 被标注成 invalid，意味着什么？我们利用 page table 就是想要寻找一个从 virtual address 到 physical address 间的对应关系，或者说是从 VPN 到 PPN 的关系。由于页表是对于进程而言的(per-process)，所以如果页表中的某一个 PTE (page table entry) 被标注为 invalid，这意味着对于该虚拟页并没有被分配给这个进程，也就是说对于该进程而言这个虚拟页是非法的，因此在 page table 中你根据这个虚拟页号(VPN)为数组下标找到的 PTE 当中的标记位是 invalid，它不允许你建立从该虚拟页到某个 physical page frame 间的映射关系。</p>
+<p>而对于 TLB 而言，每一个 TLB entry 中的 valid bit 代表的是该 TLB entry 中有没有存放一个合法的 address translation 关系。一个常见的做法是把初始状态下每个 TLB entry 的 valid bit 都设置为 invalid(如果用 1 来表示 valid address translation，用 0 来表示 invalid address translation，那么在初始状态下所有 TLB entry 的 valid bit 都是 0)。因为在初始状态下，TLB 中还没有 cache 任何信息，在程序运行的过程中，TLB 不断得以扩充、更新等等，此时 TLB entry 中的 valid bit 开始陆续由 0 变 1。</p>
+<p>TLB entry 当中的 other bits 同样主要包括一些权限位和标记位，在此不做展开描述。</p>
+<h2 id="TLB-Issue-Context-Switches">TLB Issue: Context Switches</h2>
+<p>对于 TLB 而言，当我们在不同进程间切换的时候会产生一些值得注意的问题。注意 TLB 中包含的有效的 virtual address 与 physical address 之间的转化关系应该是针对某一个特定的进程而言的，因为对于不同的进程来说，它们各自拥有独立的 address space 和 page table。对于不同的进程而言，VPN 和 PFN 之间的对应关系也是完全不同的。TLB 中存放的某一个进程 A 的常见的 VPN 和 PFN 之间的转化关系对于另外一个进程 B 来说完全没有任何意义，因此当我们在进程间切换的时候，操作系统必须采取某种手段区分 TLB 中存放的不同进程的转化关系，避免张冠李戴，即 B 进程在进行 virtual address 到 physical address 间的转换时使用的是进程 A 的 address  translation 的对应方法。</p>
+<p>在下面的 TLB 示意图中便存在这样的潜在问题，例如对于 process1 来说， VPN 10 对应 PFN 100，对于 process2 来说，VPN 10 对应 PFN 170。那么10号虚拟页是在不同进程中与之对应的 page frame 是不一样的，但是 TLB 不清楚对于 process1 而言，它应该在两种对应关系中选择哪一种，同样 TLB 也不清楚对于 process2 而言，它应该在两种对应关系中选择哪一种。</p>
+<figure>
+    <img src="/img/TLB_example1.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="TLB-example1">
+</figure>
+<p>因此我们现在就出现了下面的一个问题，当我们在不同进程之间切换的时候，例如说从进程 A 切换到进程 B。TLB 中存储的有关进程 A 的地址转化关系对于进程 B 来说是没有意义的，或者说 TLB 并不知道进程与哪一条 TLB entry 是对应的。因此一旦出现类似于上面的某一个虚拟页在不同进程中对应不同的 page frame的情况，TLB 就不清楚对于不同的进程，它应该从若干的备选的转化关系中的选择哪一个？</p>
+<p>第一种解决方法非常自然，也很简单粗暴，就是每一次在切换进程的时候都将 TLB 中的内容清空 (flush the TLB on each context switch)。当然这种方法要付出的代价也是比较大的，因为原来好不容易存好的 TLB 中的内容就因为短暂的进程切换就全部清空了，设想一下现在 OS 在众多进程中频繁切换，由于每一次在切换进程的时候，TLB 中的内容都会被清空，因此如果你一旦想返回或重启原来的进程，类似于从进程 A 切换到进程 B，再切换到进程 A，再从进程 A 切换到进程 B 的过程中，TLB 原来存放的属于进程 A 的 virtual address 与 physical address 间的对应关系就消失了，此时你从进程 B 再切换到 进程 A 的时候，显然会增加 TLB miss rate，因为 TLB 原来存放的属于进程 A 的 virtual address 与 physical address 间的对应关系已经消失不见了。</p>
+<p>第二种解决方法是在 TLB 的 TLB Entry 中加入 ASID field (address space identifier)，我们可以把 ASID field 看作是 process identifier(PID)，但是 ASID 的位数比 PID 少，例如 ASID 是 8 位，而 PID 是 32 位。</p>
+<p>下面这幅图就展示了一个添加了 ASID field 的 TLB。有了 ASID field 后其实就很直观地能够看到某一个从 virtual address 到 physical address 的转换关系 (本质上是 VPN 到 PFN 的转换关系) 是针对哪一个 process 而言的了。当然有了 ASID field 了以后，硬件也必须知道自己当前所处的是哪个进程，这可能需要在当前进程的 ASID 做一些处理使之与其它进程的 ASID 有一定的区别，在这里不深入探讨。</p>
+<figure>
+    <img src="/img/TLB_example2.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="TLB-example2">
+</figure>
+<p>当然有的时候可能还会出现下图所示的多个虚拟页共享一个 page frame 的情况出现 (多个 VPN 对应一个 PFN)。</p>
+<figure>
+    <img src="/img/TLB_example3.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="TLB-example3">
+</figure>
+<h2 id="Issue-Replacement-Policy">Issue: Replacement Policy</h2>
+<p>TLB 本质上是一个 cache，因此如果当 TLB 满了，我们想继续往  TLB 中添加新的元素就需要进行替换 (cache replacement)，在此处不深入探讨具体的替换策略。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OSTEP Chapter19 Paging: Faster Translations (TLBs)</div>
+      <div>http://mufancolin.github.io/2023/05/14/OSTEP-Chapter19-Paging-Faster-Translations-TLBs/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Colin Mufan</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>2023-05-14</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/13/OSTEP-Chapter18-Paging-Introduction/" title="OSTEP Chapter18 Paging: Introduction">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OSTEP Chapter18 Paging: Introduction</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

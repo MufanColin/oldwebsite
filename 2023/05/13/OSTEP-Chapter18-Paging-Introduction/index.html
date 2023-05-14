@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://mufancolin.github.io/img/x86_page_table_entry.png">
 <meta property="og:image" content="http://mufancolin.github.io/img/access_memory_with_paging.png">
 <meta property="article:published_time" content="2023-05-13T14:19:46.000Z">
-<meta property="article:modified_time" content="2023-05-13T14:19:46.484Z">
+<meta property="article:modified_time" content="2023-05-14T00:49:49.187Z">
 <meta property="article:author" content="Colin Mufan">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://mufancolin.github.io/img/a_simple_64_byte_address_space.png">
@@ -301,7 +301,7 @@
             <p>Thus, it may be worth considering the second approach: to chop up space into <strong>fixed-sized</strong> pieces. In virtual memory, we call this idea paging, and it goes back to an early and important system, the Atlas.</p><p>Instead of splitting up a process’s <strong>address space</strong> into some number of variable-sized logical segements(e.g., code, heap, stack), we divide it into fixed-sized units, each of which we call a <strong>page</strong>. Correspondingly, we view <strong>physical memory</strong> as an array fixed-sized slots called <strong>page frames</strong>; <strong>each of these</strong> (page) <strong>frames can contain a single virtual-memory page</strong>.</p>
           </div>
 <h2 id="一个简单的示例">一个简单的示例</h2>
-<p>现在，我们假设有一个大小为 64 bytes 的 address space。这样的一个 address space (virtual) 被分为了 4 个 pages，分别记作 page0, page1, page2, page3，每个 page 的大小为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>÷</mo><mn>4</mn><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">64\div4 =16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">64</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span> bytes，如 <a href="#a-simple-64-byte-address-space">Figure 18.1</a>所示。</p>
+<p>现在，我们假设有一个大小为 64 bytes 的 address space。这样的一个 address space (virtual) 被分为了 4 个 pages，分别记作 page0, page1, page2, page3，每个 page 的大小为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>÷</mo><mn>4</mn><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">64\div4 =16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">64</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span> bytes，如 <a href="#a-simple-64-byte-address-space">Figure 18.1</a> 所示。</p>
 <figure>
     <img src="/img/a_simple_64_byte_address_space.png" srcset="/img/loading.gif" lazyload width="500" height="auto" id="a-simple-64-byte-address-space">
 </figure>
@@ -424,6 +424,12 @@ PhysAddr <span class="token operator">=</span> <span class="token punctuation">(
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2023/05/14/OSTEP-Chapter19-Paging-Faster-Translations-TLBs/" title="OSTEP Chapter19 Paging: Faster Translations (TLBs)">
+                        <span class="hidden-mobile">OSTEP Chapter19 Paging: Faster Translations (TLBs)</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

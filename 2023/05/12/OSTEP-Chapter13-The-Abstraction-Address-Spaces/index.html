@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/profile.JPG">
-  <link rel="icon" href="/img/profile.JPG">
+  <link rel="apple-touch-icon" sizes="76x76" href="/oldwebsite/img/profile.JPG">
+  <link rel="icon" href="/oldwebsite/img/profile.JPG">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -19,7 +19,7 @@
     <meta name="description" content="OSTEP Chapter13 The Abstraction: Address Spaces              本文是个人 OSTEP Chapter13 的阅读感想。            点此阅读原文              However, we have to keep those pesky users in mind, and doing so requires the O">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OSTEP Chapter13 The Abstraction: Address Spaces">
-<meta property="og:url" content="http://mufancolin.github.io/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/index.html">
+<meta property="og:url" content="http://mufancolin.github.io/oldwebsite/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/index.html">
 <meta property="og:site_name" content="Colin Mufan&#39;s wonderland">
 <meta property="og:description" content="OSTEP Chapter13 The Abstraction: Address Spaces              本文是个人 OSTEP Chapter13 的阅读感想。            点此阅读原文              However, we have to keep those pesky users in mind, and doing so requires the O">
 <meta property="og:locale" content="en_US">
@@ -63,12 +63,12 @@
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
-<link  rel="stylesheet" href="/css/main.css" />
+<link  rel="stylesheet" href="/oldwebsite/css/main.css" />
 
 
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  <link id="highlight-css" rel="stylesheet" href="/oldwebsite/css/highlight.css" />
   
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+    <link id="highlight-css-dark" rel="stylesheet" href="/oldwebsite/css/highlight-dark.css" />
   
 
 
@@ -77,15 +77,15 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"mufancolin.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"mufancolin.github.io","root":"/oldwebsite/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/oldwebsite/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
       Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
   </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
+  <script  src="/oldwebsite/js/utils.js" ></script>
+  <script  src="/oldwebsite/js/color-schema.js" ></script>
   
 
 
@@ -102,7 +102,7 @@
 <div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/oldwebsite/">
       <strong>Colin Mufan&#39;s wonderland</strong>
     </a>
 
@@ -121,7 +121,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/oldwebsite/">
                 <i class="iconfont icon-home-fill"></i>
                 <span>Home</span>
               </a>
@@ -133,7 +133,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/oldwebsite/archives/">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>Archives</span>
               </a>
@@ -145,7 +145,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/oldwebsite/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 <span>Categories</span>
               </a>
@@ -157,7 +157,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/oldwebsite/tags/">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>Tags</span>
               </a>
@@ -169,7 +169,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/oldwebsite/about/">
                 <i class="iconfont icon-user-fill"></i>
                 <span>About</span>
               </a>
@@ -199,7 +199,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('/oldwebsite/img/background.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -299,20 +299,20 @@
 <p>对于一个程序或进程来说，它的地址空间经过简化主要包括 code, stack, heap 三个核心部分。其中 code 部分存放的就是一行行的代码，stack 在函数调用中起到关键作用，特别是在递归中每向下深入递归一层，函数便会被 push 到栈中，而在 <code>return</code> 时，函数便会被 pop 出栈，heap 则用于存放一些动态分配的内存，例如 C 语言中的 <code>malloc()</code> 和 C++、Java中的 <code>new</code>。</p>
 <p>下面的 Figure 13.3 就是一个 16KB 大小的 address space 的示意图，其中 code 部分位于 0KB-1KB 之间。heap 部分从 1KB 开始，并可能在程序运行过程中向下增长或向上缩小。stack 部分从最下方的 16KB 处开始，并可能在程序运行过程中向上增长或向下缩小。</p>
 <figure>
-    <img src="/img/an_example_address_space.png" srcset="/img/loading.gif" lazyload width="500" height="auto" id="an-example-address-space">
+    <img src="/img/an_example_address_space.png" srcset="/oldwebsite/img/loading.gif" lazyload width="500" height="auto" id="an-example-address-space">
 </figure>
 <p>我们说这样的一个 16KB 大小的 address space 其实就是 OS 为这个程序提供的一种抽象化、虚拟化的内存空间。这段代码可能在物理内存中并不位于 0KB-16KB，而可能在物理内存的任何一个地方。对于代码而言，它头顶的天空就是 OS 为它提供的这样一个虚拟化的 address space，在它的世界里没有人跟它竞争这个大的游乐园，它可以尽情地在这个 address space 中干它想干的事情，不只是对于这段代码，对于每一段代码都是一样的，OS 为每一段代码都造了一个梦，一个属于代码自己的梦工厂。而从虚拟地址到物理地址的转化以及这个过程中可能存在的一系列问题，都由 OS 和硬件间相互配合来解决，比如说 OS 会把代码在 address space 中干的事情翻译成在真实的有限的物理内存中应该做的事情。</p>
 <div class="note note-warning">
             <p>When, for example, process A in <a href="#three-processes-sharing-memory">Figure 13.2</a> tries to perform a load at address 0(which we will call a <strong>virtual address</strong>), somehow the OS, in tandem with some hardware support, will <strong>have to make sure the load doesn’t actually go to physical address 0</strong> but <strong>rather to physical address 320KB</strong> (<strong>where A is loaded into memory</strong>). This is the key to virtualization of memory, which underlies every modern computer system in the world.</p>
           </div>
 <figure>
-    <img src="/img/three_processes_sharing_memory.png" srcset="/img/loading.gif" lazyload width="500" height="auto" id="three-processes-sharing-memory">
+    <img src="/img/three_processes_sharing_memory.png" srcset="/oldwebsite/img/loading.gif" lazyload width="500" height="auto" id="three-processes-sharing-memory">
 </figure>
 <div class="note note-danger">
             <p><strong>Every address you see is virtual.</strong></p>
           </div>
 <figure>
-    <img src="/img/every_address_you_see_is_virtual.png" srcset="/img/loading.gif" lazyload width="600" height="auto" id="every-address-you-see-is-virtual">
+    <img src="/img/every_address_you_see_is_virtual.png" srcset="/oldwebsite/img/loading.gif" lazyload width="600" height="auto" id="every-address-you-see-is-virtual">
 </figure>
                 
               </div>
@@ -325,7 +325,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/OSTEP/">#OSTEP</a>
+        <a href="/oldwebsite/tags/OSTEP/">#OSTEP</a>
       
     </div>
   
@@ -338,7 +338,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>OSTEP Chapter13 The Abstraction: Address Spaces</div>
-      <div>http://mufancolin.github.io/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/</div>
+      <div>http://mufancolin.github.io/oldwebsite/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/</div>
     </div>
     <div class="license-meta">
       
@@ -382,7 +382,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/05/12/OSTEP-Chapter12-A-Dialogue-on-Memory-Virtualization/" title="OSTEP Chapter12 A Dialogue on Memory Virtualization">
+                      <a href="/oldwebsite/2023/05/12/OSTEP-Chapter12-A-Dialogue-on-Memory-Virtualization/" title="OSTEP Chapter12 A Dialogue on Memory Virtualization">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">OSTEP Chapter12 A Dialogue on Memory Virtualization</span>
                         <span class="visible-mobile">Previous</span>
@@ -392,7 +392,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/05/13/OSTEP-Chapter15-Mechanism-Address-Translation/" title="OSTEP Chapter15 Mechanism: Address Translation">
+                      <a href="/oldwebsite/2023/05/13/OSTEP-Chapter15-Mechanism-Address-Translation/" title="OSTEP Chapter15 Mechanism: Address Translation">
                         <span class="hidden-mobile">OSTEP Chapter15 Mechanism: Address Translation</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -526,8 +526,8 @@
 
 <script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
 <script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+<script  src="/oldwebsite/js/events.js" ></script>
+<script  src="/oldwebsite/js/plugins.js" ></script>
 
 
   <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
@@ -549,7 +549,7 @@
 
 
   
-    <script  src="/js/img-lazyload.js" ></script>
+    <script  src="/oldwebsite/js/img-lazyload.js" ></script>
   
 
 
@@ -650,7 +650,7 @@
 
   <script>Fluid.plugins.imageCaption();</script>
 
-  <script  src="/js/local-search.js" ></script>
+  <script  src="/oldwebsite/js/local-search.js" ></script>
 
 
 
@@ -658,7 +658,7 @@
 
 <!-- 主题的启动项，将它保持在最底部 -->
 <!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+<script  src="/oldwebsite/js/boot.js" ></script>
 
 
   

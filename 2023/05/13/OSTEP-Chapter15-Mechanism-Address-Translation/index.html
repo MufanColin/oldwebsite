@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/profile.JPG">
-  <link rel="icon" href="/img/profile.JPG">
+  <link rel="apple-touch-icon" sizes="76x76" href="/oldwebsite/img/profile.JPG">
+  <link rel="icon" href="/oldwebsite/img/profile.JPG">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -19,7 +19,7 @@
     <meta name="description" content="OSTEP Chapter15 Mechanism: Address Translation              本文是个人 OSTEP Chapter15 的阅读感想。            点此阅读原文 地址翻译的机理 在 OSTEP Chapter13 中，我们提到过程序中产生的地址都是虚拟地址 (virtual address)，对于程序而言，它眼中的内存就是地址空间 (addres">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OSTEP Chapter15 Mechanism: Address Translation">
-<meta property="og:url" content="http://mufancolin.github.io/2023/05/13/OSTEP-Chapter15-Mechanism-Address-Translation/index.html">
+<meta property="og:url" content="http://mufancolin.github.io/oldwebsite/2023/05/13/OSTEP-Chapter15-Mechanism-Address-Translation/index.html">
 <meta property="og:site_name" content="Colin Mufan&#39;s wonderland">
 <meta property="og:description" content="OSTEP Chapter15 Mechanism: Address Translation              本文是个人 OSTEP Chapter15 的阅读感想。            点此阅读原文 地址翻译的机理 在 OSTEP Chapter13 中，我们提到过程序中产生的地址都是虚拟地址 (virtual address)，对于程序而言，它眼中的内存就是地址空间 (addres">
 <meta property="og:locale" content="en_US">
@@ -62,12 +62,12 @@
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
-<link  rel="stylesheet" href="/css/main.css" />
+<link  rel="stylesheet" href="/oldwebsite/css/main.css" />
 
 
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  <link id="highlight-css" rel="stylesheet" href="/oldwebsite/css/highlight.css" />
   
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+    <link id="highlight-css-dark" rel="stylesheet" href="/oldwebsite/css/highlight-dark.css" />
   
 
 
@@ -76,15 +76,15 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"mufancolin.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"mufancolin.github.io","root":"/oldwebsite/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/oldwebsite/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
       Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
   </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
+  <script  src="/oldwebsite/js/utils.js" ></script>
+  <script  src="/oldwebsite/js/color-schema.js" ></script>
   
 
 
@@ -101,7 +101,7 @@
 <div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/oldwebsite/">
       <strong>Colin Mufan&#39;s wonderland</strong>
     </a>
 
@@ -120,7 +120,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/oldwebsite/">
                 <i class="iconfont icon-home-fill"></i>
                 <span>Home</span>
               </a>
@@ -132,7 +132,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/oldwebsite/archives/">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>Archives</span>
               </a>
@@ -144,7 +144,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/oldwebsite/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 <span>Categories</span>
               </a>
@@ -156,7 +156,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/oldwebsite/tags/">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>Tags</span>
               </a>
@@ -168,7 +168,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/oldwebsite/about/">
                 <i class="iconfont icon-user-fill"></i>
                 <span>About</span>
               </a>
@@ -198,7 +198,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('/oldwebsite/img/background.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -301,10 +301,10 @@
 <p>下方的 <a href="#process-and-its-address-space">Figure 15.1</a> 展示的是一个进程和它的地址空间 address space，在这个地址空间中有三大块: program code, heap, stack。在 <a href="#process-and-its-address-space">Figure 15.1</a> 中，可以看到在 program code 块中，从地址128 (虚拟地址) 开始存放着三条汇编语句，同时变量的值被存放在 stack 当中的 15KB 处。对于一个程序而言，它的世界的全部就是这样一个 address space，它的大小是 16KB，从地址 0 开始。例如一个程序有可能想在 address space 的地址 0 位置放一条 load 指令，但是 OS 和硬件并不一定要把这条 load 指令转换到物理地址中的 0 位置。甚至如果在物理地址的 0 位置已经存储了其它程序的内容的情况下更是不能够把这样的一条 load 指令转换到物理地址的 0 位置。在下方的 <a href="#physical-memory-with-a-single-relocated-process">Figure 15.2</a> 中，我们可以看到操作系统和硬件配合后并没有把 16KB 的 address space 翻译到物理内存的 0-16KB，而是把 address space 中的 0-16KB 翻译到了物理内存的 32KB-48KB，可以想象到原有的地址空间中的虚拟地址经过线性平移就可以对应到物理内存中真实的物理地址。</p>
 <p>现在问题就变成了 OS 和硬件应该采用一种什么样的机制，将一个程序的 address space 中的虚拟地址转化为物理内存中真实存在的物理地址。</p>
 <figure>
-    <img src="/img/process_and_its_address_space.png" srcset="/img/loading.gif" lazyload width="250" height="auto" id="process-and-its-address-space">
+    <img src="/img/process_and_its_address_space.png" srcset="/oldwebsite/img/loading.gif" lazyload width="250" height="auto" id="process-and-its-address-space">
 </figure>
 <figure>
-    <img src="/img/physical_memory_with_a_single_relocated_process.png" srcset="/img/loading.gif" lazyload width="500" height="auto" id="physical-memory-with-a-single-relocated-process">
+    <img src="/img/physical_memory_with_a_single_relocated_process.png" srcset="/oldwebsite/img/loading.gif" lazyload width="500" height="auto" id="physical-memory-with-a-single-relocated-process">
 </figure>
 <p>在这里我们引入一种名叫 <strong>base and bounds</strong> 的方法，这里面 base 和 bounds 分别指代两个寄存器 (register)。我们指出：通过引入这两个寄存器，我们便可以完成对于每个程序当中的虚拟地址到物理地址之间的转换，并且我们可以确保不同程序的虚拟地址在被转换到物理地址后不会出现&quot;交叉撞车&quot;的情况。</p>
 <p>我们依然以 <a href="#process-and-its-address-space">Figure 15.1</a> 和 <a href="#physical-memory-with-a-single-relocated-process">Figure 15.2</a> 两图为例，在 <a href="#process-and-its-address-space">Figure 15.1</a> 中，我们可以看到对于程序而言，它眼中的内存世界就是自己的这个 address space，在这个 address space 中，起始地址是 0KB，跨度是 16KB (这也是 address space 的全部大小)。在 <a href="#physical-memory-with-a-single-relocated-process">Figure 15.2</a> 中，可以看到这 16KB 的空间由虚拟地址中的 0-16KB 被转化为 物理地址中的 32KB-48KB。这本质上就相当于变换了基地址，在 Figure 15.1 中，基地址为 0KB，而在 Figure 15.2 中，基地址为 32KB，这便是通过设置 base register 为 32KB 所达成的。这样的一种转换方式用公式概括即为</p>
@@ -335,7 +335,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/OSTEP/">#OSTEP</a>
+        <a href="/oldwebsite/tags/OSTEP/">#OSTEP</a>
       
     </div>
   
@@ -348,7 +348,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>OSTEP Chapter15 Mechanism: Address Translation</div>
-      <div>http://mufancolin.github.io/2023/05/13/OSTEP-Chapter15-Mechanism-Address-Translation/</div>
+      <div>http://mufancolin.github.io/oldwebsite/2023/05/13/OSTEP-Chapter15-Mechanism-Address-Translation/</div>
     </div>
     <div class="license-meta">
       
@@ -392,7 +392,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/" title="OSTEP Chapter13 The Abstraction: Address Spaces">
+                      <a href="/oldwebsite/2023/05/12/OSTEP-Chapter13-The-Abstraction-Address-Spaces/" title="OSTEP Chapter13 The Abstraction: Address Spaces">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">OSTEP Chapter13 The Abstraction: Address Spaces</span>
                         <span class="visible-mobile">Previous</span>
@@ -402,7 +402,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/05/13/OSTEP-Chapter18-Paging-Introduction/" title="OSTEP Chapter18 Paging: Introduction">
+                      <a href="/oldwebsite/2023/05/13/OSTEP-Chapter18-Paging-Introduction/" title="OSTEP Chapter18 Paging: Introduction">
                         <span class="hidden-mobile">OSTEP Chapter18 Paging: Introduction</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -536,8 +536,8 @@
 
 <script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
 <script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+<script  src="/oldwebsite/js/events.js" ></script>
+<script  src="/oldwebsite/js/plugins.js" ></script>
 
 
   <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
@@ -559,7 +559,7 @@
 
 
   
-    <script  src="/js/img-lazyload.js" ></script>
+    <script  src="/oldwebsite/js/img-lazyload.js" ></script>
   
 
 
@@ -660,7 +660,7 @@
 
   <script>Fluid.plugins.imageCaption();</script>
 
-  <script  src="/js/local-search.js" ></script>
+  <script  src="/oldwebsite/js/local-search.js" ></script>
 
 
 
@@ -668,7 +668,7 @@
 
 <!-- 主题的启动项，将它保持在最底部 -->
 <!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
+<script  src="/oldwebsite/js/boot.js" ></script>
 
 
   
